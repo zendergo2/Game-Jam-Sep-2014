@@ -8,6 +8,7 @@ public class CharacterMove : MonoBehaviour {
 	public float moveSpeed = 5f;
 	public float jumpSpeed = 4f;
 	public float jumpHeight = 1.1f;
+	public float bigJumpHeight = 2.2f;
 	public float gravity = 4f;
 	public bool jumping;
 
@@ -16,6 +17,7 @@ public class CharacterMove : MonoBehaviour {
 	private float cH;
 	private float cW;
 	private bool canJump;
+	private float tempJumpHeight;
 	private Vector2 xInput;
 	private Vector2 yInput;
 	private Vector2 yGravity;
@@ -146,6 +148,18 @@ public class CharacterMove : MonoBehaviour {
 			}
 			yield return new WaitForFixedUpdate();
 		}
+	}
+
+	void increaseJump(float time)
+	{
+		tempJumpHeight = jumpHeight;
+		jumpHeight = bigJumpHeight;
+		Invoke("resetJump", time);
+	}
+
+	void resetJump()
+	{
+		jumpHeight = tempJumpHeight;
 	}
 
 	void enableGravity()

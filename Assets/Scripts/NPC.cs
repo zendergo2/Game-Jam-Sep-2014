@@ -4,9 +4,11 @@ using System.Collections;
 public class NPC : MonoBehaviour
 {
 
-	// Use this for initialization
-	void Start () 
+	protected Animator animator;
+	
+	void Start()
 	{
+		animator = GetComponent<Animator>();
 		gameObject.layer = 8;	
 	}
 	
@@ -14,8 +16,14 @@ public class NPC : MonoBehaviour
 	void Update () 
 	{
 		if (Input.GetKeyDown (KeyCode.Space) && gameObject.layer == 8)
-				gameObject.layer = 0;
+		{
+			gameObject.layer = 0;
+			animator.SetBool("Translucent", false);
+		}
 		else if (Input.GetKeyDown (KeyCode.Space) && gameObject.layer == 0)
-				gameObject.layer = 8;
+		{
+			gameObject.layer = 8;
+			animator.SetBool("Translucent", true);
+		}
 	}
 }

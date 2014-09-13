@@ -1,15 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NPCJumper : MonoBehaviour {
+public class NPCJumper : MonoBehaviour
+{
+	private bool isTranslucent = true;
 
-	// Use this for initialization
-	void Start () {
-	
+
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.Space) && !isTranslucent)
+		{
+			isTranslucent = true;
+
+		}
+		else if (Input.GetKeyDown (KeyCode.Space) && isTranslucent)
+		{
+			isTranslucent = false;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void OnCollisionEnter2D(Collision2D coll)
+	{
+		Debug.Log("Hello");
+		if (coll.collider != null && !isTranslucent)
+			coll.gameObject.SendMessage("increaseJump", 5f);
 	}
 }
