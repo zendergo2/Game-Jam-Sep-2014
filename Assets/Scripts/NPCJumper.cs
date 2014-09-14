@@ -21,7 +21,6 @@ public class NPCJumper : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D coll)
 	{
-		Debug.Log("Hello");
 		if (coll.collider != null && !isTranslucent)
 			coll.gameObject.SendMessage("increaseJump", 5f);
 	}

@@ -117,10 +117,10 @@ public class CharacterMove : MonoBehaviour {
 			canJump = true;
 			if (hitBLD.collider != null)
 				if (hitBLD.collider.gameObject.tag == "JumpBlock")
-					increaseJump (2.5f);
+					increaseJump (1.5f);
 			else if (hitBRD.collider != null)
 				if (hitBRD.collider.gameObject.tag == "JumpBlock")
-					increaseJump (2.5f);
+					increaseJump (1.5f);
 		}
 		if (hitBRR.collider == null && hitTRR.collider == null)
 			canMoveRight = true;
