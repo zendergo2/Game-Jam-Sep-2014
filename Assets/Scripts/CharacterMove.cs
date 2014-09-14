@@ -3,13 +3,14 @@ using System.Collections;
 
 public class CharacterMove : MonoBehaviour {
 
-	public float charHeight;
-	public float charWidth;
+	public float charHeight = 4f;
+	public float charWidth = 1.84f;
 	public float moveSpeed = 5f;
-	public float jumpSpeed = 4f;
-	public float jumpHeight = 1.1f;
-	public float bigJumpHeight = 2.2f;
-	public float gravity = 4f;
+	public float jumpSpeed = 10f;
+	public static float REG_HEIGHT = 5f;
+	public static float BIG_HEIGHT = 10f;
+	public float jumpHeight;
+	public float gravity = 10f;
 	public bool jumping;
 
 	protected Animator animator;
@@ -17,7 +18,6 @@ public class CharacterMove : MonoBehaviour {
 	private float cH;
 	private float cW;
 	private bool canJump;
-	private float tempJumpHeight;
 	private Vector2 xInput;
 	private Vector2 yInput;
 	private Vector2 yGravity;
@@ -36,6 +36,7 @@ public class CharacterMove : MonoBehaviour {
 		canMoveRight = false;
 		canMoveUp = false;
 		canMoveDown = false;
+		jumpHeight = REG_HEIGHT;
 		jumping = false;
 		canJump = false;
 
@@ -91,14 +92,14 @@ public class CharacterMove : MonoBehaviour {
 		Vector2 castBRR = new Vector2(transform.position.x + cW, transform.position.y - cH);
 		Vector2 castTRR = new Vector2(transform.position.x + cW, transform.position.y + cH);
 
-		RaycastHit2D hitTRU = Physics2D.Raycast(castTRU, Vector2.up, 0.1f, layerMask);
-		RaycastHit2D hitTLU = Physics2D.Raycast(castTLU, Vector2.up, 0.1f, layerMask);
-		RaycastHit2D hitTLL = Physics2D.Raycast(castTLL, -Vector2.right, 0.1f, layerMask);
-		RaycastHit2D hitBLL = Physics2D.Raycast(castBLL, -Vector2.right, 0.1f, layerMask);
-		RaycastHit2D hitBLD = Physics2D.Raycast(castBLD, -Vector2.up, 0.1f, layerMask);
-		RaycastHit2D hitBRD = Physics2D.Raycast(castBRD, -Vector2.up, 0.1f, layerMask);
-		RaycastHit2D hitBRR = Physics2D.Raycast(castBRR, Vector2.right, 0.1f, layerMask);
-		RaycastHit2D hitTRR = Physics2D.Raycast(castTRR, Vector2.right, 0.1f, layerMask);
+		RaycastHit2D hitTRU = Physics2D.Raycast(castTRU, Vector2.up, 0.25f, layerMask);
+		RaycastHit2D hitTLU = Physics2D.Raycast(castTLU, Vector2.up, 0.25f, layerMask);
+		RaycastHit2D hitTLL = Physics2D.Raycast(castTLL, -Vector2.right, 0.25f, layerMask);
+		RaycastHit2D hitBLL = Physics2D.Raycast(castBLL, -Vector2.right, 0.25f, layerMask);
+		RaycastHit2D hitBLD = Physics2D.Raycast(castBLD, -Vector2.up, 0.25f, layerMask);
+		RaycastHit2D hitBRD = Physics2D.Raycast(castBRD, -Vector2.up, 0.25f, layerMask);
+		RaycastHit2D hitBRR = Physics2D.Raycast(castBRR, Vector2.right, 0.25f, layerMask);
+		RaycastHit2D hitTRR = Physics2D.Raycast(castTRR, Vector2.right, 0.25f, layerMask);
 
 		if (hitTRU.collider == null && hitTLU.collider == null)
 			canMoveUp = true;
@@ -114,6 +115,12 @@ public class CharacterMove : MonoBehaviour {
 		{
 			canMoveDown = false;
 			canJump = true;
+			if (hitBLD.collider != null)
+				if (hitBLD.collider.gameObject.tag == "JumpBlock")
+					increaseJump (2.5f);
+			else if (hitBRD.collider != null)
+				if (hitBRD.collider.gameObject.tag == "JumpBlock")
+					increaseJump (2.5f);
 		}
 		if (hitBRR.collider == null && hitTRR.collider == null)
 			canMoveRight = true;
@@ -152,14 +159,15 @@ public class CharacterMove : MonoBehaviour {
 
 	void increaseJump(float time)
 	{
-		tempJumpHeight = jumpHeight;
-		jumpHeight = bigJumpHeight;
+		Debug.Log ("Phase 1");
+		jumpHeight = BIG_HEIGHT;
 		Invoke("resetJump", time);
 	}
 
 	void resetJump()
 	{
-		jumpHeight = tempJumpHeight;
+		Debug.Log("Phase 2");
+		jumpHeight = REG_HEIGHT;
 	}
 
 	void enableGravity()
